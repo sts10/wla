@@ -276,8 +276,12 @@ fn make_list_free_of_metadata(
             let delimiter = parse_delimiter(delimiter).unwrap();
             let mut just_the_words = vec![];
             for word in list {
-                let split_vec = split_and_vectorize(word, &delimiter.to_string());
-                just_the_words.push(split_vec[1].to_string());
+                if word.contains(delimiter) {
+                    let split_vec = split_and_vectorize(word, &delimiter.to_string());
+                    just_the_words.push(split_vec[1].to_string());
+                } else {
+                    just_the_words.push(word.to_string());
+                }
             }
             just_the_words
         }
@@ -285,8 +289,12 @@ fn make_list_free_of_metadata(
             let delimiter = parse_delimiter(delimiter).unwrap();
             let mut just_the_words = vec![];
             for word in list {
-                let split_vec = split_and_vectorize(word, &delimiter.to_string());
-                just_the_words.push(split_vec[0].to_string());
+                if word.contains(delimiter) {
+                    let split_vec = split_and_vectorize(word, &delimiter.to_string());
+                    just_the_words.push(split_vec[0].to_string());
+                } else {
+                    just_the_words.push(word.to_string());
+                }
             }
             just_the_words
         }

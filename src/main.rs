@@ -4,6 +4,7 @@ use std::io;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::path::PathBuf;
+use std::process;
 use wla::*;
 pub mod display_information;
 pub mod edit_distance;
@@ -16,6 +17,22 @@ struct Args {
     /// Print some debug information
     #[clap(long = "debug")]
     debug: bool,
+
+    /// Ignore characters after the first instance of the specified delimiter until the end of line, treating
+    /// anything before the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't'
+    /// for tab and 's' for space. Helpful for ignoring metadata like word frequencies.
+    /// Works with attribute analysis and most word removal options, but not with word modifications
+    /// (like to lowercase). May not be used together with -d, -D or -G options.
+    #[clap(short = 'g', long = "ignore-after")]
+    ignore_after_delimiter: Option<char>,
+
+    /// Ignore characters before and including the first instance of the specified delimiter, treating
+    /// anything after the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't'
+    /// for tab and 's' for space. Helpful for ignoring metadata like word frequencies.
+    /// Works with attribute analysis and most word removal options, but not with word modifications
+    /// (like to lowercase). May not be used together with -d, -D or -g options.
+    #[clap(short = 'G', long = "ignore-before")]
+    ignore_before_delimiter: Option<char>,
 
     /// Print list information in JSON format
     #[clap(short = 'j', long = "json")]
@@ -41,15 +58,17 @@ fn main() {
         Some(path) => make_vec_from_filename(&path, None, None),
         None => read_from_stdin(),
     };
-    // some placeholder values for now...
-    let ignore_before_delimiter = None;
-    let ignore_after_delimiter = None;
+    // Basic check of parameters
+    if opt.ignore_after_delimiter.is_some() && opt.ignore_before_delimiter.is_some() {
+        eprintln!("Can't handle two delimters yet!");
+        process::exit(1);
+    }
 
     display_list_information(
         &word_list,
         opt.attributes_as_json,
-        ignore_after_delimiter,
-        ignore_before_delimiter,
+        opt.ignore_after_delimiter,
+        opt.ignore_before_delimiter,
         opt.samples,
     );
 }
