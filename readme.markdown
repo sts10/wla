@@ -45,13 +45,13 @@ Options:
       --debug
           Print some debug information
   -g, --ignore-after <IGNORE_AFTER_DELIMITER>
-          Ignore characters after the first instance of the specified delimiter until the end of line, treating anything before the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies. Works with attribute analysis and most word removal options, but not with word modifications (like to lowercase). May not be used together with -d, -D or -G options
+          Ignore characters after the first instance of the specified delimiter until the end of line, treating anything before the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies or dice numbers
   -G, --ignore-before <IGNORE_BEFORE_DELIMITER>
-          Ignore characters before and including the first instance of the specified delimiter, treating anything after the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies. Works with attribute analysis and most word removal options, but not with word modifications (like to lowercase). May not be used together with -d, -D or -g options
+          Ignore characters before and including the first instance of the specified delimiter, treating anything after the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies or dice numbers
   -j, --json
           Print list information in JSON format
   -s, --samples
-          Print a handful of pseudorandomly selected words from the created list to the terminal. Should NOT be used as secure passphrases
+          Print a handful of pseudorandomly selected words from the list to the terminal. Should NOT be used as actual passphrases
   -h, --help
           Print help
   -V, --version

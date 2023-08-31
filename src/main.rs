@@ -20,17 +20,15 @@ struct Args {
 
     /// Ignore characters after the first instance of the specified delimiter until the end of line, treating
     /// anything before the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't'
-    /// for tab and 's' for space. Helpful for ignoring metadata like word frequencies.
-    /// Works with attribute analysis and most word removal options, but not with word modifications
-    /// (like to lowercase). May not be used together with -d, -D or -G options.
+    /// for tab and 's' for space. Helpful for ignoring metadata like word frequencies or dice
+    /// numbers.
     #[clap(short = 'g', long = "ignore-after")]
     ignore_after_delimiter: Option<char>,
 
     /// Ignore characters before and including the first instance of the specified delimiter, treating
     /// anything after the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't'
-    /// for tab and 's' for space. Helpful for ignoring metadata like word frequencies.
-    /// Works with attribute analysis and most word removal options, but not with word modifications
-    /// (like to lowercase). May not be used together with -d, -D or -g options.
+    /// for tab and 's' for space. Helpful for ignoring metadata like word frequencies or dice
+    /// numbers.
     #[clap(short = 'G', long = "ignore-before")]
     ignore_before_delimiter: Option<char>,
 
@@ -38,8 +36,8 @@ struct Args {
     #[clap(short = 'j', long = "json")]
     attributes_as_json: bool,
 
-    /// Print a handful of pseudorandomly selected words from the created list
-    /// to the terminal. Should NOT be used as secure passphrases.
+    /// Print a handful of pseudorandomly selected words from the list
+    /// to the terminal. Should NOT be used as actual passphrases.
     #[clap(short = 's', long = "samples")]
     samples: bool,
 
