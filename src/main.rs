@@ -21,6 +21,11 @@ struct Args {
     #[clap(short = 'j', long = "json")]
     attributes_as_json: bool,
 
+    /// Print a handful of pseudorandomly selected words from the created list
+    /// to the terminal. Should NOT be used as secure passphrases.
+    #[clap(short = 's', long = "samples")]
+    samples: bool,
+
     /// Word list input file
     #[clap(name = "Inputted Word List")]
     inputted_word_list: Option<PathBuf>,
@@ -39,14 +44,13 @@ fn main() {
     // some placeholder values for now...
     let ignore_before_delimiter = None;
     let ignore_after_delimiter = None;
-    let samples = false;
 
     display_list_information(
         &word_list,
         opt.attributes_as_json,
         ignore_after_delimiter,
         ignore_before_delimiter,
-        samples,
+        opt.samples,
     );
 }
 
