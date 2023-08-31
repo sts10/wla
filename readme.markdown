@@ -3,7 +3,7 @@
 A tool for finding information about a given word list.
 
 ```
-$ wla eff.txt 
+$ wla -G t eff.txt 
 Attributes
 ----------
 Lines found               : 7776
@@ -32,7 +32,7 @@ Kraft-McMillan inequality : satisfied
 
 You can also pipe the output of other tools into wla: 
 
-`tidy -D t eff.txt | wla`
+`tidy -L -D t eff.txt | wla`
 
 ## Formal usage/help text
 ```
@@ -42,10 +42,20 @@ Arguments:
   [Inputted Word List]  Word list input file
 
 Options:
-      --debug    Print some debug information
-  -j, --json     Print list information in JSON format
-  -h, --help     Print help
-  -V, --version  Print version
+      --debug
+          Print some debug information
+  -g, --ignore-after <IGNORE_AFTER_DELIMITER>
+          Ignore characters after the first instance of the specified delimiter until the end of line, treating anything before the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies. Works with attribute analysis and most word removal options, but not with word modifications (like to lowercase). May not be used together with -d, -D or -G options
+  -G, --ignore-before <IGNORE_BEFORE_DELIMITER>
+          Ignore characters before and including the first instance of the specified delimiter, treating anything after the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies. Works with attribute analysis and most word removal options, but not with word modifications (like to lowercase). May not be used together with -d, -D or -g options
+  -j, --json
+          Print list information in JSON format
+  -s, --samples
+          Print a handful of pseudorandomly selected words from the created list to the terminal. Should NOT be used as secure passphrases
+  -h, --help
+          Print help
+  -V, --version
+          Print version
 ```
 
 ## Installation
