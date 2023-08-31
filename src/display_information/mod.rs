@@ -18,10 +18,11 @@ pub struct ListAttributes {
     pub longest_word_length: usize,
     pub longest_word_example: String,
 
-    pub has_duplicates_strict: bool,
+    pub has_duplicates_exact: bool,
     pub has_duplicates_fuzzy: bool,
     pub has_blank_lines: bool,
     pub has_starting_or_trailing_space: bool,
+    pub has_non_ascii_characters: bool,
 
     pub is_free_of_prefix_words: bool,
     pub is_free_of_suffix_words: bool,
@@ -87,10 +88,11 @@ fn make_attributes(list: &[String], samples: bool) -> ListAttributes {
         is_above_brute_force_line: is_above_brute_force_line(list),
         is_above_shannon_line: is_above_shannon_line(list),
         // new
-        has_duplicates_strict: has_duplicates_strict(list),
+        has_duplicates_exact: has_duplicates_exact(list),
         has_duplicates_fuzzy: has_duplicates_fuzzy(list),
         has_blank_lines: has_blank_lines(list),
         has_starting_or_trailing_space: has_starting_or_trailing_space(list),
+        has_non_ascii_characters: has_non_ascii_characters(list),
 
         is_free_of_prefix_words: !has_prefix_words(list),
         is_free_of_suffix_words: !has_suffix_words(list),
@@ -152,7 +154,7 @@ pub fn display_list_information(
         print_attributes_as_json(&list_attributes);
     } else {
         eprintln!("Attributes");
-        eprintln!("----------------------");
+        eprintln!("----------");
         eprintln!(
             "List length               : {} words",
             list_attributes.list_length
@@ -171,7 +173,7 @@ pub fn display_list_information(
         );
         eprintln!(
             "Has exact duplicates      : {}",
-            list_attributes.has_duplicates_strict
+            list_attributes.has_duplicates_exact
         );
         eprintln!(
             "Has fuzzy duplicates      : {}",
@@ -184,6 +186,10 @@ pub fn display_list_information(
         eprintln!(
             "Has start/end whitespace  : {}",
             list_attributes.has_starting_or_trailing_space
+        );
+        eprintln!(
+            "Has non-ASCII characters  : {}",
+            list_attributes.has_non_ascii_characters
         );
         eprintln!(
             "Free of prefix words?     : {}",
@@ -216,12 +222,10 @@ pub fn display_list_information(
             "Above brute force line?   : {}",
             list_attributes.is_above_brute_force_line
         );
-
-        eprintln!(
-            "Above Shannon line?       : {}",
-            list_attributes.is_above_shannon_line
-        );
-
+        //         eprintln!(
+        //             "Above Shannon line?       : {}",
+        //             list_attributes.is_above_shannon_line
+        //         );
         eprintln!(
             "Shortest edit distance    : {}",
             list_attributes.shortest_edit_distance
@@ -461,7 +465,7 @@ where
     iter.into_iter().all(move |x| uniq.insert(x))
 }
 
-fn has_duplicates_strict(list: &[String]) -> bool {
+fn has_duplicates_exact(list: &[String]) -> bool {
     !all_unique_elements(list)
 }
 
@@ -483,7 +487,14 @@ fn has_blank_lines(list: &[String]) -> bool {
     false
 }
 
-// fn has_non-ascii
+fn has_non_ascii_characters(list: &[String]) -> bool {
+    for word in list {
+        if word.chars().any(|chr| !chr.is_ascii()) {
+            return true;
+        }
+    }
+    false
+}
 
 // fn has_conflicting_unicode_normalizations
 
