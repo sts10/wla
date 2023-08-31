@@ -18,6 +18,11 @@ pub struct ListAttributes {
     pub longest_word_length: usize,
     pub longest_word_example: String,
 
+    pub has_duplicates_strict: bool,
+    pub has_duplicates_fuzzy: bool,
+    pub has_blank_lines: bool,
+    pub has_starting_or_trailing_space: bool,
+
     pub is_free_of_prefix_words: bool,
     pub is_free_of_suffix_words: bool,
 
@@ -66,20 +71,8 @@ fn make_attributes(list: &[String], samples: bool) -> ListAttributes {
         .unwrap()
         .to_string();
 
-    let is_free_of_prefix_words = !has_prefix_words(list);
-    let is_free_of_suffix_words = !has_suffix_words(list);
-    let is_uniquely_decodable = is_uniquely_decodable(list);
-
-    let shortest_edit_distance = find_shortest_edit_distance(list);
-    let mean_edit_distance = find_mean_edit_distance(list);
     let longest_shared_prefix =
         find_longest_shared_prefix(list, Some(count_characters(&longest_word_example)));
-    // By definition, unique_character_prefix == longest_shared_prefix + 1
-    // We have to use map in case longest_shared_prefix is None, which is
-    // unlikely, but technically possible.
-    // let unique_character_prefix =
-    //     longest_shared_prefix.map(|longest_shared_prefix| longest_shared_prefix + 1);
-    let unique_character_prefix = longest_shared_prefix + 1;
 
     ListAttributes {
         list_length: list.len(),
@@ -93,13 +86,19 @@ fn make_attributes(list: &[String], samples: bool) -> ListAttributes {
         assumed_entropy_per_character: assumed_entropy_per_character(list),
         is_above_brute_force_line: is_above_brute_force_line(list),
         is_above_shannon_line: is_above_shannon_line(list),
-        is_free_of_prefix_words,
-        is_free_of_suffix_words,
-        is_uniquely_decodable,
-        shortest_edit_distance,
-        mean_edit_distance,
+        // new
+        has_duplicates_strict: has_duplicates_strict(list),
+        has_duplicates_fuzzy: has_duplicates_fuzzy(list),
+        has_blank_lines: has_blank_lines(list),
+        has_starting_or_trailing_space: has_starting_or_trailing_space(list),
+
+        is_free_of_prefix_words: !has_prefix_words(list),
+        is_free_of_suffix_words: !has_suffix_words(list),
+        is_uniquely_decodable: is_uniquely_decodable(list),
+        shortest_edit_distance: find_shortest_edit_distance(list),
+        mean_edit_distance: find_mean_edit_distance(list),
         longest_shared_prefix,
-        unique_character_prefix,
+        unique_character_prefix: longest_shared_prefix + 1,
         kraft_mcmillan: satisfies_kraft_mcmillan(list),
         samples,
     }
@@ -152,7 +151,7 @@ pub fn display_list_information(
     if attributes_as_json {
         print_attributes_as_json(&list_attributes);
     } else {
-        eprintln!("Attributes of new list");
+        eprintln!("Attributes");
         eprintln!("----------------------");
         eprintln!(
             "List length               : {} words",
@@ -169,6 +168,22 @@ pub fn display_list_information(
         eprintln!(
             "Length of longest word    : {} characters ({})",
             list_attributes.longest_word_length, list_attributes.longest_word_example
+        );
+        eprintln!(
+            "Has exact duplicates      : {}",
+            list_attributes.has_duplicates_strict
+        );
+        eprintln!(
+            "Has fuzzy duplicates      : {}",
+            list_attributes.has_duplicates_fuzzy
+        );
+        eprintln!(
+            "Has blank lines           : {}",
+            list_attributes.has_blank_lines
+        );
+        eprintln!(
+            "Has start/end whitespace  : {}",
+            list_attributes.has_starting_or_trailing_space
         );
         eprintln!(
             "Free of prefix words?     : {}",
@@ -425,6 +440,52 @@ pub fn find_first_different_character_zero_indexed(word1: &str, word2: &str) -> 
         count_characters(word2)
     }
 }
+
+fn has_starting_or_trailing_space(list: &[String]) -> bool {
+    for word in list {
+        if word.trim() != word {
+            return true;
+        }
+    }
+    false
+}
+
+use std::collections::HashSet;
+use std::hash::Hash;
+fn all_unique_elements<T>(iter: T) -> bool
+where
+    T: IntoIterator,
+    T::Item: Eq + Hash,
+{
+    let mut uniq = HashSet::new();
+    iter.into_iter().all(move |x| uniq.insert(x))
+}
+
+fn has_duplicates_strict(list: &[String]) -> bool {
+    !all_unique_elements(list)
+}
+
+fn has_duplicates_fuzzy(list: &[String]) -> bool {
+    let mut lowercase_word_list = vec![];
+    // There's probably a better way to do this...
+    for word in list {
+        lowercase_word_list.push(word.to_lowercase().trim().to_owned());
+    }
+    !all_unique_elements(lowercase_word_list)
+}
+
+fn has_blank_lines(list: &[String]) -> bool {
+    for word in list {
+        if word.trim() == "" {
+            return true;
+        }
+    }
+    false
+}
+
+// fn has_non-ascii
+
+// fn has_conflicting_unicode_normalizations
 
 /// Checks if a list has any words that are prefixs of other
 /// words on the list.
