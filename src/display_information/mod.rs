@@ -137,10 +137,7 @@ fn is_above_shannon_line(list: &[String]) -> bool {
 }
 
 /// This is a large and long function that prints all of the attributes of
-/// the generated (new) list.
-///
-/// We just want to "display" this information, rather than print it to files
-/// or stdout, so we use `eprintln!`
+/// the list.
 pub fn display_list_information(
     list: &[String],
     attributes_as_json: bool,
@@ -157,103 +154,101 @@ pub fn display_list_information(
     if attributes_as_json {
         print_attributes_as_json(&list_attributes);
     } else {
-        eprintln!("Attributes");
-        eprintln!("----------");
-        eprintln!(
+        println!(
             "Lines found               : {}",
             list_attributes.list_length
         );
-        eprintln!(
+        println!(
             "Mean word length          : {:.2} characters",
             list_attributes.mean_word_length
         );
-        eprintln!(
+        println!(
             "Length of shortest word   : {} characters ({})",
             list_attributes.shortest_word_length, list_attributes.shortest_word_example
         );
-        eprintln!(
+        println!(
             "Length of longest word    : {} characters ({})",
             list_attributes.longest_word_length, list_attributes.longest_word_example
         );
-        eprintln!(
+        println!(
             "Has exact duplicates      : {}",
             list_attributes.has_duplicates_exact
         );
-        eprintln!(
+        println!(
             "Has fuzzy duplicates      : {}",
             list_attributes.has_duplicates_fuzzy
         );
-        eprintln!(
+        println!(
             "Has blank lines           : {}",
             list_attributes.has_blank_lines
         );
-        eprintln!(
+        println!(
             "Has start/end whitespace  : {}",
             list_attributes.has_starting_or_trailing_space
         );
-        eprintln!(
+        println!(
             "Has non-ASCII characters  : {}",
             list_attributes.has_non_ascii_characters
         );
-        eprintln!(
+        println!(
             "Uniform Unicode           : {}",
             list_attributes.has_uniform_unicode_normalization
         );
-        eprintln!(
+        println!(
             "Free of prefix words?     : {}",
             list_attributes.is_free_of_prefix_words
         );
-        eprintln!(
+        println!(
             "Free of suffix words?     : {:?}",
             list_attributes.is_free_of_suffix_words
         );
 
         // At least for now, this one is EXPENSIVE
-        eprintln!(
+        println!(
             "Uniquely decodable?       : {:?}",
             list_attributes.is_uniquely_decodable
         );
 
-        eprintln!(
+        println!(
             "Entropy per word          : {:.3} bits",
             list_attributes.entropy_per_word
         );
-        eprintln!(
+        println!(
             "Efficiency per character  : {:.3} bits",
             list_attributes.efficiency_per_character
         );
-        eprintln!(
+        println!(
             "Assumed entropy per char  : {:.3} bits",
             list_attributes.assumed_entropy_per_character
         );
-        eprintln!(
+        println!(
             "Above brute force line?   : {}",
             list_attributes.is_above_brute_force_line
         );
-        //         eprintln!(
+        //         println!(
         //             "Above Shannon line?       : {}",
         //             list_attributes.is_above_shannon_line
         //         );
-        eprintln!(
+        println!(
             "Shortest edit distance    : {}",
             list_attributes.shortest_edit_distance
         );
-        eprintln!(
+        println!(
             "Mean edit distance        : {:.3}",
             list_attributes.mean_edit_distance
         );
-        eprintln!(
+        println!(
             "Longest shared prefix     : {}",
             list_attributes.longest_shared_prefix
         );
         // Numbers of characters required to definitely get to a unique
         // prefix
-        eprintln!(
+        println!(
             "Unique character prefix   : {}",
             list_attributes.unique_character_prefix
         );
 
-        eprintln!(
+        println!(
             "Kraft-McMillan inequality : {}",
             list_attributes.kraft_mcmillan
         );
@@ -265,7 +260,7 @@ pub fn display_list_information(
 
 fn print_attributes_as_json(list_attributes: &ListAttributes) {
     let json = serde_json::to_string(&list_attributes).unwrap();
-    eprintln!("{}", json);
+    println!("{}", json);
 }
 
 fn make_list_free_of_metadata(
@@ -604,19 +599,19 @@ pub fn mean_word_length(list: &[String]) -> f32 {
 }
 
 fn print_samples(samples: Vec<String>) {
-    eprintln!("\nWord samples");
-    eprintln!("------------");
+    println!("\nWord samples");
+    println!("------------");
     for n in 0..30 {
         if n != 0 && n % 6 == 0 {
             // if we're at the end of the 6th word,
             // print a newline
-            eprintln!();
+            println!();
         } else if n != 0 {
             // else just print a space to go between each
             // word
-            eprint!(" ");
+            print!(" ");
         }
-        eprint!("{}", samples[n]);
+        print!("{}", samples[n]);
     }
-    eprintln!();
+    println!();
 }
