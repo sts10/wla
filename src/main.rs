@@ -35,7 +35,6 @@ struct Args {
 }
 
 fn main() {
-    println!("Hello, world!");
     let opt = Args::parse();
     eprintln!("Received args: {:?}", opt);
 
