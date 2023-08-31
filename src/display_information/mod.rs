@@ -1,7 +1,9 @@
 //! Display attributes and information about the generated word list
 
+pub mod unicode_normalization_checks;
 pub mod uniquely_decodable;
 use crate::count_characters;
+use crate::display_information::unicode_normalization_checks::uniform_unicode_normalization;
 use crate::display_information::uniquely_decodable::is_uniquely_decodable;
 use crate::parse_delimiter;
 use crate::split_and_vectorize;
@@ -23,6 +25,7 @@ pub struct ListAttributes {
     pub has_blank_lines: bool,
     pub has_starting_or_trailing_space: bool,
     pub has_non_ascii_characters: bool,
+    pub has_uniform_unicode_normalization: bool,
 
     pub is_free_of_prefix_words: bool,
     pub is_free_of_suffix_words: bool,
@@ -93,6 +96,7 @@ fn make_attributes(list: &[String], samples: bool) -> ListAttributes {
         has_blank_lines: has_blank_lines(list),
         has_starting_or_trailing_space: has_starting_or_trailing_space(list),
         has_non_ascii_characters: has_non_ascii_characters(list),
+        has_uniform_unicode_normalization: uniform_unicode_normalization(list),
 
         is_free_of_prefix_words: !has_prefix_words(list),
         is_free_of_suffix_words: !has_suffix_words(list),
@@ -190,6 +194,10 @@ pub fn display_list_information(
         eprintln!(
             "Has non-ASCII characters  : {}",
             list_attributes.has_non_ascii_characters
+        );
+        eprintln!(
+            "Uniform Unicode           : {}",
+            list_attributes.has_uniform_unicode_normalization
         );
         eprintln!(
             "Free of prefix words?     : {}",
@@ -495,8 +503,6 @@ fn has_non_ascii_characters(list: &[String]) -> bool {
     }
     false
 }
-
-// fn has_conflicting_unicode_normalizations
 
 /// Checks if a list has any words that are prefixs of other
 /// words on the list.

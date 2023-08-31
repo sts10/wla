@@ -12,6 +12,7 @@ use std::path::PathBuf;
 pub mod display_information;
 pub mod edit_distance;
 use crate::display_information::display_list_information;
+// use crate::display_information::unicode_normalization_checks::uniform_unicode_normalization;
 // pub mod input_validations;
 // use crate::file_readers::*;
 // use crate::file_writer::*;
