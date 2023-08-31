@@ -35,7 +35,6 @@ You can also pipe the output of other tools into wla:
 `tidy -D t eff.txt | wla`
 
 ## Formal usage/help text
-
 ```
 Usage: wla [OPTIONS] [Inputted Word List]
 
@@ -43,11 +42,11 @@ Arguments:
   [Inputted Word List]  Word list input file
 
 Options:
-      --debug    Do not print any extra information
+      --debug    Print some debug information
+  -j, --json     Print list information in JSON format
   -h, --help     Print help
   -V, --version  Print version
 ```
-
 
 ## Installation
 

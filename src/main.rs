@@ -1,5 +1,4 @@
 use clap::Parser;
-
 use std::fs::File;
 use std::io;
 use std::io::BufRead;
@@ -14,9 +13,13 @@ use crate::display_information::display_list_information;
 #[derive(Parser, Debug)]
 #[clap(version, about, name = "wla")]
 struct Args {
-    /// Do not print any extra information
+    /// Print some debug information
     #[clap(long = "debug")]
     debug: bool,
+
+    /// Print list information in JSON format
+    #[clap(short = 'j', long = "json")]
+    attributes_as_json: bool,
 
     /// Word list input file
     #[clap(name = "Inputted Word List")]
@@ -33,15 +36,14 @@ fn main() {
         Some(path) => make_vec_from_filename(&path, None, None),
         None => read_from_stdin(),
     };
-    // place holder values
-    let attributes_as_json = false;
+    // some placeholder values for now...
     let ignore_before_delimiter = None;
     let ignore_after_delimiter = None;
     let samples = false;
 
     display_list_information(
         &word_list,
-        attributes_as_json,
+        opt.attributes_as_json,
         ignore_after_delimiter,
         ignore_before_delimiter,
         samples,
