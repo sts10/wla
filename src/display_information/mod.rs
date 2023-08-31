@@ -160,7 +160,7 @@ pub fn display_list_information(
         eprintln!("Attributes");
         eprintln!("----------");
         eprintln!(
-            "List length               : {} words",
+            "Lines found               : {}",
             list_attributes.list_length
         );
         eprintln!(

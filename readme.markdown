@@ -6,7 +6,7 @@ A tool for finding information about a given word list.
 $ wla eff.txt 
 Attributes
 ----------
-List length               : 7776 words
+Lines found               : 7776
 Mean word length          : 6.99 characters
 Length of shortest word   : 3 characters (aim)
 Length of longest word    : 9 characters (zoologist)
