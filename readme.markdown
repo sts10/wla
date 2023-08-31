@@ -3,7 +3,7 @@
 A tool for finding information about a given word list.
 
 ```
-$ wla ../tidy/l/eff_clean.txt 
+$ wla eff.txt 
 Attributes
 ----------
 List length               : 7776 words
