@@ -4,40 +4,30 @@ use std::fs::File;
 use std::io;
 use std::io::BufRead;
 use std::io::BufReader;
-use wla::*;
-// use std::env;
-// use std::path::Path;
 use std::path::PathBuf;
-// use std::process;
+use wla::*;
 pub mod display_information;
 pub mod edit_distance;
 use crate::display_information::display_list_information;
-// use crate::display_information::unicode_normalization_checks::uniform_unicode_normalization;
-// pub mod input_validations;
-// use crate::file_readers::*;
-// use crate::file_writer::*;
-// use crate::input_validations::*;
-// use crate::parsers::*;
 
-/// Combine and clean word lists
+/// Audit word lists
 #[derive(Parser, Debug)]
-#[clap(version, about, name = "tidy")]
+#[clap(version, about, name = "wla")]
 struct Args {
     /// Do not print any extra information
-    #[clap(long = "quiet")]
-    quiet: bool,
+    #[clap(long = "debug")]
+    debug: bool,
 
-    /// Word list input files. Can be more than one, in which case
-    /// they'll be combined and de-duplicated. Requires at least
-    /// one file.
-    // #[clap(name = "Inputted Word List", required = true)]
+    /// Word list input file
     #[clap(name = "Inputted Word List")]
     inputted_word_list: Option<PathBuf>,
 }
 
 fn main() {
     let opt = Args::parse();
-    eprintln!("Received args: {:?}", opt);
+    if opt.debug {
+        eprintln!("Received args: {:?}", opt);
+    }
 
     let word_list = match opt.inputted_word_list {
         Some(path) => make_vec_from_filename(&path, None, None),
