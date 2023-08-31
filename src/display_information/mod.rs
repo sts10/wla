@@ -339,11 +339,8 @@ fn find_shortest_edit_distance(list: &[String]) -> usize {
                 if this_edit_distance < shortest_edit_distance {
                     shortest_edit_distance = this_edit_distance;
                 }
-                // If we're found an edit distance of 1, we know that'll be the
-                // shortest possible (since Tidy removes duplicates by default, so
-                // a shortest_edit_distance of 0 is NOT possible)
-                if shortest_edit_distance == 1 {
-                    return 1;
+                if shortest_edit_distance == 0 {
+                    return 0;
                 }
             }
         }
@@ -413,7 +410,7 @@ pub fn find_longest_shared_prefix(list: &[String], longest_word_length: Option<u
 /// Given 2 words, finds the index of the first character that is
 /// **different** within them.
 /// ```
-/// use tidy::display_information::find_first_different_character_zero_indexed;
+/// use wla::display_information::find_first_different_character_zero_indexed;
 ///
 /// assert_eq!(
 ///     find_first_different_character_zero_indexed("hello", "help"), 3

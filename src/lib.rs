@@ -1,3 +1,5 @@
+pub mod display_information;
+pub mod edit_distance;
 use unicode_segmentation::UnicodeSegmentation;
 /// When counting characters of a word, we want to count all accented character as 1,
 /// regardless of the Unicode, to better approximate how humans would count the number
@@ -24,7 +26,7 @@ pub fn parse_delimiter(delimiter: char) -> Option<char> {
 /// Simple helper function that splits a `str` by a given substring `str`,
 /// Then returns a Vector of `str`s.
 /// ```
-/// use tidy::split_and_vectorize;
+/// use wla::split_and_vectorize;
 /// assert_eq!(split_and_vectorize("a:b:c",":"), vec!["a","b","c"]);
 /// ```
 /// I find this a handy general helper function.
