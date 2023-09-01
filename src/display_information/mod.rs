@@ -496,6 +496,7 @@ fn has_duplicates_fuzzy(list: &[String]) -> bool {
 fn count_unique_words(list: &[String]) -> usize {
     let mut list_as_hashset = HashSet::new();
     for word in list {
+        // Need to explore how this treats lines of whitespace ("   ")
         list_as_hashset.insert(word.to_ascii_lowercase().trim().to_owned());
     }
     list_as_hashset.len()
