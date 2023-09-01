@@ -179,7 +179,7 @@ pub fn display_list_information(
             !list_attributes.has_non_ascii_characters
         );
         println!(
-            "Unicode Normalized        : {}",
+            "Unicode normalized        : {}",
             list_attributes.has_uniform_unicode_normalization
         );
         println!(
@@ -197,7 +197,7 @@ pub fn display_list_information(
             list_attributes.is_uniquely_decodable
         );
         println!(
-            "Above brute force line?   : {}",
+            "Above brute force line    : {}",
             list_attributes.is_above_brute_force_line
         );
         //         println!(
