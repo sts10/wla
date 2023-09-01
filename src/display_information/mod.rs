@@ -159,9 +159,53 @@ pub fn display_list_information(
             list_attributes.list_length
         );
         println!(
-            "Mean word length          : {:.2} characters",
-            list_attributes.mean_word_length
+            "Free of exact duplicates  : {}",
+            !list_attributes.has_duplicates_exact
         );
+        println!(
+            "Free of fuzzy duplicates  : {}",
+            !list_attributes.has_duplicates_fuzzy
+        );
+        println!(
+            "Free of blank lines       : {}",
+            !list_attributes.has_blank_lines
+        );
+        println!(
+            "No start/end whitespace   : {}",
+            !list_attributes.has_starting_or_trailing_space
+        );
+        println!(
+            "No non-ASCII characters   : {}",
+            !list_attributes.has_non_ascii_characters
+        );
+        println!(
+            "Unicode Normalized        : {}",
+            list_attributes.has_uniform_unicode_normalization
+        );
+        println!(
+            "Free of prefix words      : {}",
+            list_attributes.is_free_of_prefix_words
+        );
+        println!(
+            "Free of suffix words      : {:?}",
+            list_attributes.is_free_of_suffix_words
+        );
+
+        // At least for now, this one is EXPENSIVE
+        println!(
+            "Uniquely decodable        : {:?}",
+            list_attributes.is_uniquely_decodable
+        );
+        println!(
+            "Above brute force line?   : {}",
+            list_attributes.is_above_brute_force_line
+        );
+        //         println!(
+        //             "Above Shannon line?       : {}",
+        //             list_attributes.is_above_shannon_line
+        //         );
+
+        // Start of non-Bools
         println!(
             "Length of shortest word   : {} characters ({})",
             list_attributes.shortest_word_length, list_attributes.shortest_word_example
@@ -171,44 +215,9 @@ pub fn display_list_information(
             list_attributes.longest_word_length, list_attributes.longest_word_example
         );
         println!(
-            "Has exact duplicates      : {}",
-            list_attributes.has_duplicates_exact
+            "Mean word length          : {:.2} characters",
+            list_attributes.mean_word_length
         );
-        println!(
-            "Has fuzzy duplicates      : {}",
-            list_attributes.has_duplicates_fuzzy
-        );
-        println!(
-            "Has blank lines           : {}",
-            list_attributes.has_blank_lines
-        );
-        println!(
-            "Has start/end whitespace  : {}",
-            list_attributes.has_starting_or_trailing_space
-        );
-        println!(
-            "Has non-ASCII characters  : {}",
-            list_attributes.has_non_ascii_characters
-        );
-        println!(
-            "Uniform Unicode           : {}",
-            list_attributes.has_uniform_unicode_normalization
-        );
-        println!(
-            "Free of prefix words?     : {}",
-            list_attributes.is_free_of_prefix_words
-        );
-        println!(
-            "Free of suffix words?     : {:?}",
-            list_attributes.is_free_of_suffix_words
-        );
-
-        // At least for now, this one is EXPENSIVE
-        println!(
-            "Uniquely decodable?       : {:?}",
-            list_attributes.is_uniquely_decodable
-        );
-
         println!(
             "Entropy per word          : {:.3} bits",
             list_attributes.entropy_per_word
@@ -221,14 +230,6 @@ pub fn display_list_information(
             "Assumed entropy per char  : {:.3} bits",
             list_attributes.assumed_entropy_per_character
         );
-        println!(
-            "Above brute force line?   : {}",
-            list_attributes.is_above_brute_force_line
-        );
-        //         println!(
-        //             "Above Shannon line?       : {}",
-        //             list_attributes.is_above_shannon_line
-        //         );
         println!(
             "Shortest edit distance    : {}",
             list_attributes.shortest_edit_distance
