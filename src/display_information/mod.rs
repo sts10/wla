@@ -511,8 +511,14 @@ fn has_blank_lines(list: &[String]) -> bool {
 }
 
 fn has_non_ascii_characters(list: &[String]) -> bool {
+    // for word in list {
+    //     if word.chars().any(|chr| !chr.is_ascii()) {
+    //         return true;
+    //     }
+    // }
+    // false
     for word in list {
-        if word.chars().any(|chr| !chr.is_ascii()) {
+        if !word.is_ascii() {
             return true;
         }
     }
