@@ -3,7 +3,7 @@
 A tool for finding information about a given word list.
 
 ```
-$ wla -G t -s eff.txt 
+$ wla -G t -s eff_long.txt 
 Lines found               : 7776
 Free of exact duplicates  : true
 Free of fuzzy duplicates  : true
