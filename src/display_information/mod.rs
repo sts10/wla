@@ -23,6 +23,7 @@ pub struct ListAttributes {
     pub has_duplicates_exact: bool,
     pub has_duplicates_fuzzy: bool,
     pub has_blank_lines: bool,
+    pub unique_words: usize,
     pub has_starting_or_trailing_space: bool,
     pub has_non_ascii_characters: bool,
     pub has_uniform_unicode_normalization: bool,
@@ -94,6 +95,7 @@ fn make_attributes(list: &[String], samples: bool) -> ListAttributes {
         has_duplicates_exact: has_duplicates_exact(list),
         has_duplicates_fuzzy: has_duplicates_fuzzy(list),
         has_blank_lines: has_blank_lines(list),
+        unique_words: count_unique_words(list),
         has_starting_or_trailing_space: has_starting_or_trailing_space(list),
         has_non_ascii_characters: has_non_ascii_characters(list),
         has_uniform_unicode_normalization: uniform_unicode_normalization(list),
@@ -169,6 +171,10 @@ pub fn display_list_information(
         println!(
             "Free of blank lines       : {}",
             !list_attributes.has_blank_lines
+        );
+        println!(
+            "Unique words found        : {}",
+            list_attributes.unique_words
         );
         println!(
             "No start/end whitespace   : {}",
@@ -482,9 +488,17 @@ fn has_duplicates_fuzzy(list: &[String]) -> bool {
     let mut lowercase_word_list = vec![];
     // There's probably a better way to do this...
     for word in list {
-        lowercase_word_list.push(word.to_lowercase().trim().to_owned());
+        lowercase_word_list.push(word.to_ascii_lowercase().trim().to_owned());
     }
     !all_unique_elements(lowercase_word_list)
+}
+
+fn count_unique_words(list: &[String]) -> usize {
+    let mut list_as_hashset = HashSet::new();
+    for word in list {
+        list_as_hashset.insert(word.to_ascii_lowercase().trim().to_owned());
+    }
+    list_as_hashset.len()
 }
 
 fn has_blank_lines(list: &[String]) -> bool {

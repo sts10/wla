@@ -8,6 +8,7 @@ Lines found               : 7776
 Free of exact duplicates  : true
 Free of fuzzy duplicates  : true
 Free of blank lines       : true
+Unique words found        : 7776
 No start/end whitespace   : true
 No non-ASCII characters   : true
 Unicode normalized        : true
@@ -29,11 +30,11 @@ Kraft-McMillan inequality : satisfied
 
 Word samples
 ------------
-living liqueur backache slimy shelving hurled
-cufflink agency enroll same pastor refrain
-divorcee crabmeat sleeve fidgety sheep startle
-trickily overboard tubby shaded ground unshaved
-alive unbend dropkick rebalance oil autism
+chivalry external drift bobsled tacking brilliant
+outsmart liquid unhealthy equator request deafening
+clamshell arguable excusably morally keg sprout
+preseason snide unranked crummiest absinthe gummy
+wages paper coastland unbridle zesty chitchat
 ```
 
 You can also pipe the output of other tools into wla: 
