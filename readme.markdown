@@ -3,18 +3,18 @@
 A tool for finding information about a given word list.
 
 ```
-$ wla -G t eff.txt 
+$ wla -G t -s eff.txt 
 Lines found               : 7776
 Free of exact duplicates  : true
 Free of fuzzy duplicates  : true
 Free of blank lines       : true
 No start/end whitespace   : true
 No non-ASCII characters   : true
-Unicode Normalized        : true
+Unicode normalized        : true
 Free of prefix words      : true
 Free of suffix words      : false
 Uniquely decodable        : true
-Above brute force line?   : true
+Above brute force line    : true
 Length of shortest word   : 3 characters (aim)
 Length of longest word    : 9 characters (zoologist)
 Mean word length          : 6.99 characters
@@ -26,6 +26,14 @@ Mean edit distance        : 6.858
 Longest shared prefix     : 8
 Unique character prefix   : 9
 Kraft-McMillan inequality : satisfied
+
+Word samples
+------------
+living liqueur backache slimy shelving hurled
+cufflink agency enroll same pastor refrain
+divorcee crabmeat sleeve fidgety sheep startle
+trickily overboard tubby shaded ground unshaved
+alive unbend dropkick rebalance oil autism
 ```
 
 You can also pipe the output of other tools into wla: 
