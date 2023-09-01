@@ -4,25 +4,23 @@ A tool for finding information about a given word list.
 
 ```
 $ wla -G t eff.txt 
-Attributes
-----------
 Lines found               : 7776
-Mean word length          : 6.99 characters
+Free of exact duplicates  : true
+Free of fuzzy duplicates  : true
+Free of blank lines       : true
+No start/end whitespace   : true
+No non-ASCII characters   : true
+Unicode Normalized        : true
+Free of prefix words      : true
+Free of suffix words      : false
+Uniquely decodable        : true
+Above brute force line?   : true
 Length of shortest word   : 3 characters (aim)
 Length of longest word    : 9 characters (zoologist)
-Has exact duplicates      : false
-Has fuzzy duplicates      : false
-Has blank lines           : false
-Has start/end whitespace  : false
-Has non-ASCII characters  : false
-Uniform Unicode           : true
-Free of prefix words?     : true
-Free of suffix words?     : false
-Uniquely decodable?       : true
+Mean word length          : 6.99 characters
 Entropy per word          : 12.925 bits
 Efficiency per character  : 1.849 bits
 Assumed entropy per char  : 4.308 bits
-Above brute force line?   : true
 Shortest edit distance    : 1
 Mean edit distance        : 6.858
 Longest shared prefix     : 8
