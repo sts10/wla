@@ -1,10 +1,10 @@
 [package]
 name = "wla"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 
 [dependencies]
-clap = { version = "4.2.2", features = ["derive"] }
+clap = { version = "4.4.2", features = ["derive"] }
 rand = "0.8.5"
 unicode-segmentation = "1.10.1"
 unicode-normalization = "0.1.22"
