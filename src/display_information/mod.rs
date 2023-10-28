@@ -145,6 +145,7 @@ pub fn display_list_information(
     attributes_as_json: bool,
     ignore_ending_metadata_delimiter: Option<char>,
     ignore_starting_metadata_delimiter: Option<char>,
+    decode_words: bool,
     samples: bool,
 ) {
     let list = make_list_free_of_metadata(
@@ -152,6 +153,12 @@ pub fn display_list_information(
         ignore_starting_metadata_delimiter,
         ignore_ending_metadata_delimiter,
     );
+
+    let list = if decode_words {
+        decode_list(&list)
+    } else {
+        list
+    };
     let list_attributes = make_attributes(&list, samples);
     if attributes_as_json {
         print_attributes_as_json(&list_attributes);
@@ -270,6 +277,40 @@ fn print_attributes_as_json(list_attributes: &ListAttributes) {
     println!("{}", json);
 }
 
+/// If word starts with a double quote and ends with a double quote and comma,
+/// remove those three characters for the word.
+pub fn decode_list(list: &[String]) -> Vec<String> {
+    let mut decoded_list: Vec<String> = vec![];
+
+    for word in list {
+        let word = word.trim();
+        let word_length = word.len();
+        if word.chars().nth(0) == Some('"')
+            && word.chars().nth(word_length - 2) == Some('"')
+            && word.chars().nth(word_length - 1) == Some(',')
+        {
+            eprintln!("Found a code word");
+            decoded_list.push(decode_word(word).to_string());
+        } else {
+            decoded_list.push(word.to_string());
+        }
+    }
+    decoded_list
+}
+
+fn decode_word(word: &str) -> &str {
+    let mut chars = word.trim().chars();
+    chars.next();
+    chars.next_back();
+    chars.next_back();
+    chars.as_str()
+}
+
+#[test]
+fn can_decode_a_word() {
+    let word = "   \"mat\",";
+    assert_eq!(decode_word(word), "mat");
+}
 fn make_list_free_of_metadata(
     list: &[String],
     ignore_ending_metadata_delimiter: Option<char>,

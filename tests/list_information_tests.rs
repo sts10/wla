@@ -107,4 +107,30 @@ mod list_information_tests {
             .collect();
         assert_eq!(mean_word_length(&list), 5.3333335);
     }
+
+    #[test]
+    fn can_decode_a_word_list() {
+        let list: Vec<String> = vec![
+            "\"bat\",",
+            "cat",
+            "rat,",
+            "   \"hat\",",
+            "mat",
+            "tat",
+            "fat",
+            "oat",
+            "pat",
+            "sat",
+            "vat",
+        ]
+        .iter()
+        .map(|x| x.to_string())
+        .collect();
+
+        let decoded_list = decode_list(&list);
+        assert_eq!(decoded_list[0], "bat".to_string());
+        assert_eq!(decoded_list[1], "cat".to_string());
+        assert_eq!(decoded_list[2], "rat,".to_string());
+        assert_eq!(decoded_list[3], "hat".to_string());
+    }
 }

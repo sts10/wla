@@ -32,6 +32,11 @@ struct Args {
     #[clap(short = 'G', long = "ignore-before")]
     ignore_before_delimiter: Option<char>,
 
+    /// If word starts with a double quote and ends with a double quote, remove those 3 characters
+    /// before auditing list.
+    #[clap(short = 'd', long = "decode")]
+    decode_words: bool,
+
     /// Print list information in JSON format
     #[clap(short = 'j', long = "json")]
     attributes_as_json: bool,
@@ -67,6 +72,7 @@ fn main() {
         opt.attributes_as_json,
         opt.ignore_after_delimiter,
         opt.ignore_before_delimiter,
+        opt.decode_words,
         opt.samples,
     );
 }
