@@ -4,7 +4,6 @@ use std::io;
 use std::io::BufRead;
 use std::io::BufReader;
 use std::path::PathBuf;
-use std::process;
 use wla::*;
 pub mod display_information;
 pub mod edit_distance;
@@ -51,7 +50,7 @@ struct Args {
     inputted_word_list: Option<PathBuf>,
 }
 
-fn main() {
+fn main() -> Result<(), &'static str> {
     let opt = Args::parse();
     if opt.debug {
         eprintln!("Received args: {:?}", opt);
@@ -63,8 +62,8 @@ fn main() {
     };
     // Basic check of parameters
     if opt.ignore_after_delimiter.is_some() && opt.ignore_before_delimiter.is_some() {
-        eprintln!("Can't handle two delimters yet!");
-        process::exit(1);
+        let error_msg = "Can't handle two delimters yet!";
+        return Err(error_msg);
     }
 
     display_list_information(
@@ -75,6 +74,7 @@ fn main() {
         opt.decode_words,
         opt.samples,
     );
+    Ok(())
 }
 
 /// Takes a slice of `PathBuf`s representing the word list(s)
