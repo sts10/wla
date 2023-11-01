@@ -2,6 +2,7 @@
 
 A tool for finding information about a given word list.
 
+## Examples
 ```
 $ wla -G t -s eff_long.txt 
 Lines found               : 7776
@@ -69,12 +70,15 @@ Options:
 
 ## Installation
 
+### Latest release
+Check [the GitHub releases page](https://github.com/sts10/wla/releases) for instructions on how to install the latest released version of WLA.
+
+### Using Rust and Cargo
 1. [Install Rust](https://www.rust-lang.org/tools/install) if you haven't already
-2. Run: `cargo install --git https://github.com/sts10/wla --branch main` (Run this same command to upgrade wla.)
+2. Run: `cargo install --git https://github.com/sts10/wla --branch main` (Run this same command to upgrade wla.) Uninstall wla by running `cargo uninstall wla`.
 
-You should then be able to run `wla --help` for help text.
 
-Uninstall wla by running `cargo uninstall wla`.
+Once installed, you should then be able to run `wla --help` for help text.
 
 ## About the information reported by this program
 
