@@ -138,3 +138,10 @@ In general, WLA expects inputted files to have one word per line.
 
 ### Line endings
 WLA supports `\n` and `\r\n` line endings.
+
+
+## For developers: How to create a release
+
+This project uses [cargo-dist](https://opensource.axo.dev/cargo-dist/) to create releases. 
+
+Some of [my personal docs are here](https://sts10.github.io/docs/cargo-dist-tips.html); but basically, `cargo install cargo-dist`. When you're ready to cut a new release, test the current state of the project with `cargo dist build` and `cargo dist plan`. If that went well, create a new git tag that matches the current project version in `Cargo.toml` with `git tag vX.X.X`. Finally, run `git push --tags` to kick off the release process. GitHub will handle it from here -- check your GitHub Releases page in about 5 to 10 minutes.
