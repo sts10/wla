@@ -71,7 +71,7 @@ Options:
 ## Installation
 
 ### Latest release
-Check [the GitHub releases page](https://github.com/sts10/wla/releases) for instructions on how to install the latest released version of WLA.
+Check [the GitHub releases page](https://github.com/sts10/wla/releases) for binaries of the latest released version of WLA.
 
 ### Using Rust and Cargo
 1. [Install Rust](https://www.rust-lang.org/tools/install) if you haven't already
