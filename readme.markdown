@@ -75,8 +75,7 @@ Check [the GitHub releases page](https://github.com/sts10/wla/releases) for inst
 
 ### Using Rust and Cargo
 1. [Install Rust](https://www.rust-lang.org/tools/install) if you haven't already
-2. Run: `cargo install --git https://github.com/sts10/wla --branch main` (Run this same command to upgrade wla.) Uninstall wla by running `cargo uninstall wla`.
-
+2. Run: `cargo install --git https://github.com/sts10/wla --locked --branch main` (Run this same command to upgrade wla.) Uninstall wla by running `cargo uninstall wla`.
 
 Once installed, you should then be able to run `wla --help` for help text.
 
