@@ -1,13 +1,12 @@
-/// This is a (rather clumsily) implementation of the Sardinas-Patterson algorithm
+/// This is an implementation of the Sardinas-Patterson algorithm
 /// The goal is to check if a word list (`c`) is uniquely decodable.
 ///
 /// I followed
 /// https://github.com/danhales/blog-sardinas-patterson/blob/master/index.ipynb
-/// very closely.
+/// very closely. Other users have since helped improve the code since I wrote it.
 use std::collections::HashSet;
 
-/// Return true if the list is uniquely decodable, false if not. I
-/// don't _think_ we need to check reversed words in this case.
+/// Return true if the list is uniquely decodable, false if not.
 pub fn is_uniquely_decodable(c: &[String]) -> bool {
     let c = vec_to_hash(c);
     sardinas_patterson_theorem(c)
@@ -21,7 +20,7 @@ fn vec_to_hash(v: &[String]) -> HashSet<String> {
     my_hash
 }
 
-// Generate c for any number n
+/// Generate c for any number n
 fn generate_cn(c: &HashSet<String>, n: usize) -> HashSet<String> {
     if n == 0 {
         return c.to_owned();
