@@ -1,3 +1,11 @@
+# Version 0.2.1
+
+* 4165e88 - be more explicit about types in find_mean_edit_distance function to avoid a bug when auditing long lists. See #3.
+
+# Version 0.2.0
+
+* dc60da3 - large reorganization and renaming of files, all to make the project easier to use as a library. Given this is technically an API change, I'm calling it a minor version change.
+
 # Version 0.1.5
 
 Uses a refactored and improved implementation of the Sardinas-Patterson algorithm to check lists for unique decodability. Special thanks to @westonal.
