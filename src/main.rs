@@ -1,3 +1,5 @@
+use crate::compute_attributes::decode_list;
+use crate::compute_attributes::make_list_free_of_metadata;
 use clap::Parser;
 use std::fs::File;
 use std::io;
@@ -5,9 +7,8 @@ use std::io::BufRead;
 use std::io::BufReader;
 use std::path::PathBuf;
 use wla::*;
-pub mod display_information;
+pub mod compute_attributes;
 pub mod edit_distance;
-use crate::display_information::display_list_information;
 
 /// Audit word lists
 #[derive(Parser, Debug)]
@@ -62,18 +63,26 @@ fn main() -> Result<(), &'static str> {
     };
     // Basic check of parameters
     if opt.ignore_after_delimiter.is_some() && opt.ignore_before_delimiter.is_some() {
-        let error_msg = "Can't handle two delimters yet!";
+        let error_msg = "Can't handle more than one delimiter (yet)!";
         return Err(error_msg);
     }
 
-    display_list_information(
+    let list = make_list_free_of_metadata(
         &word_list,
-        opt.attributes_as_json,
-        opt.ignore_after_delimiter,
         opt.ignore_before_delimiter,
-        opt.decode_words,
-        opt.samples,
+        opt.ignore_after_delimiter,
     );
+
+    let list = if opt.decode_words {
+        decode_list(&list)
+    } else {
+        list
+    };
+
+    //
+    let list_attributes = make_attributes(&list);
+
+    print_list_attributes(list_attributes, opt.attributes_as_json, opt.samples);
     Ok(())
 }
 

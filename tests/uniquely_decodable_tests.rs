@@ -1,5 +1,5 @@
 mod uniquely_decodable_tests {
-    use wla::display_information::uniquely_decodable::is_uniquely_decodable;
+    use wla::compute_attributes::uniquely_decodable::is_uniquely_decodable;
 
     #[test]
     fn can_determine_a_list_with_prefix_words_is_not_uniquely_decodable() {

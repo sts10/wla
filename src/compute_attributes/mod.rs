@@ -1,10 +1,6 @@
-//! Display attributes and information about the generated word list
-
 pub mod unicode_normalization_checks;
 pub mod uniquely_decodable;
 use crate::count_characters;
-use crate::display_information::unicode_normalization_checks::uniform_unicode_normalization;
-use crate::display_information::uniquely_decodable::is_uniquely_decodable;
 use crate::parse_delimiter;
 use crate::split_and_vectorize;
 use serde::{Deserialize, Serialize};
@@ -42,7 +38,7 @@ pub struct ListAttributes {
     pub longest_shared_prefix: usize,
     pub unique_character_prefix: usize,
     pub kraft_mcmillan: KraftMcmillanOutcome,
-    pub samples: Option<Vec<String>>,
+    pub samples: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -59,59 +55,6 @@ impl fmt::Display for KraftMcmillanOutcome {
     }
 }
 
-fn make_attributes(list: &[String], samples: bool) -> ListAttributes {
-    let samples = if samples {
-        Some(generate_samples(list))
-    } else {
-        None
-    };
-    let shortest_word_example = list
-        .iter()
-        .min_by(|a, b| count_characters(a).cmp(&count_characters(b)))
-        .unwrap()
-        .to_string();
-    let longest_word_example = list
-        .iter()
-        .max_by(|a, b| count_characters(a).cmp(&count_characters(b)))
-        .unwrap()
-        .to_string();
-
-    let longest_shared_prefix =
-        find_longest_shared_prefix(list, Some(count_characters(&longest_word_example)));
-
-    ListAttributes {
-        list_length: list.len(),
-        mean_word_length: mean_word_length(list),
-        entropy_per_word: calc_entropy_per_word(list.len()),
-        shortest_word_length: count_characters(&shortest_word_example),
-        shortest_word_example,
-        longest_word_length: count_characters(&longest_word_example),
-        longest_word_example,
-        efficiency_per_character: efficiency_per_character(list),
-        assumed_entropy_per_character: assumed_entropy_per_character(list),
-        is_above_brute_force_line: is_above_brute_force_line(list),
-        is_above_shannon_line: is_above_shannon_line(list),
-        // new
-        has_duplicates_exact: has_duplicates_exact(list),
-        has_duplicates_fuzzy: has_duplicates_fuzzy(list),
-        has_blank_lines: has_blank_lines(list),
-        unique_words: count_unique_words(list),
-        has_starting_or_trailing_space: has_starting_or_trailing_space(list),
-        has_non_ascii_characters: has_non_ascii_characters(list),
-        has_uniform_unicode_normalization: uniform_unicode_normalization(list),
-
-        is_free_of_prefix_words: !has_prefix_words(list),
-        is_free_of_suffix_words: !has_suffix_words(list),
-        is_uniquely_decodable: is_uniquely_decodable(list),
-        shortest_edit_distance: find_shortest_edit_distance(list),
-        mean_edit_distance: find_mean_edit_distance(list),
-        longest_shared_prefix,
-        unique_character_prefix: longest_shared_prefix + 1,
-        kraft_mcmillan: satisfies_kraft_mcmillan(list),
-        samples,
-    }
-}
-
 /// If user gets a passphrase consisting entirely of shortest words,
 /// it's theoretically possible that we could OVERESTIMATE entropy
 /// per word. We can deterimine if we've done this by comparing out
@@ -119,7 +62,7 @@ fn make_attributes(list: &[String], samples: bool) -> ListAttributes {
 /// English letters, under which we assume each character adds roughly 4.7 bits of entropy.
 /// Note that this slightly obscure method of calculation ensures that floating-point arithmetic is
 /// not used, thus ensuring a higher level of accuracy.
-fn is_above_brute_force_line(list: &[String]) -> bool {
+pub fn is_above_brute_force_line(list: &[String]) -> bool {
     let g: i32 = 26; // roughly: assumed alphabet length
     let shortest_word_length = get_shortest_word_length(list) as u32;
     let list_length = list.len() as i32;
@@ -131,150 +74,11 @@ fn is_above_brute_force_line(list: &[String]) -> bool {
 /// https://www.princeton.edu/~wbialek/rome/refs/shannon_51.pdf
 /// Thus, this is a more difficult line for a given list to pass above than
 /// the "brute force" line described above.
-fn is_above_shannon_line(list: &[String]) -> bool {
+pub fn is_above_shannon_line(list: &[String]) -> bool {
     let shortest_word_length = get_shortest_word_length(list) as u32;
     let g: f64 = 6.1; // 2**2.6 is 6.1 when we maintain correct number of significant digits.
     let list_length = list.len() as i32;
     list_length as f64 <= g.powf(shortest_word_length.into())
-}
-
-/// This is a large and long function that prints all of the attributes of
-/// the list.
-pub fn display_list_information(
-    list: &[String],
-    attributes_as_json: bool,
-    ignore_ending_metadata_delimiter: Option<char>,
-    ignore_starting_metadata_delimiter: Option<char>,
-    decode_words: bool,
-    samples: bool,
-) {
-    let list = make_list_free_of_metadata(
-        list,
-        ignore_starting_metadata_delimiter,
-        ignore_ending_metadata_delimiter,
-    );
-
-    let list = if decode_words {
-        decode_list(&list)
-    } else {
-        list
-    };
-    let list_attributes = make_attributes(&list, samples);
-    if attributes_as_json {
-        print_attributes_as_json(&list_attributes);
-    } else {
-        println!(
-            "Lines found               : {}",
-            list_attributes.list_length
-        );
-        println!(
-            "Free of exact duplicates  : {}",
-            !list_attributes.has_duplicates_exact
-        );
-        println!(
-            "Free of fuzzy duplicates  : {}",
-            !list_attributes.has_duplicates_fuzzy
-        );
-        println!(
-            "Free of blank lines       : {}",
-            !list_attributes.has_blank_lines
-        );
-        println!(
-            "Unique words found        : {}",
-            list_attributes.unique_words
-        );
-        println!(
-            "No start/end whitespace   : {}",
-            !list_attributes.has_starting_or_trailing_space
-        );
-        println!(
-            "No non-ASCII characters   : {}",
-            !list_attributes.has_non_ascii_characters
-        );
-        println!(
-            "Unicode normalized        : {}",
-            list_attributes.has_uniform_unicode_normalization
-        );
-        println!(
-            "Free of prefix words      : {}",
-            list_attributes.is_free_of_prefix_words
-        );
-        println!(
-            "Free of suffix words      : {:?}",
-            list_attributes.is_free_of_suffix_words
-        );
-
-        // At least for now, this one is EXPENSIVE
-        println!(
-            "Uniquely decodable        : {:?}",
-            list_attributes.is_uniquely_decodable
-        );
-        println!(
-            "Above brute force line    : {}",
-            list_attributes.is_above_brute_force_line
-        );
-        //         println!(
-        //             "Above Shannon line?       : {}",
-        //             list_attributes.is_above_shannon_line
-        //         );
-
-        // Start of non-Bools
-        println!(
-            "Length of shortest word   : {} characters ({})",
-            list_attributes.shortest_word_length, list_attributes.shortest_word_example
-        );
-        println!(
-            "Length of longest word    : {} characters ({})",
-            list_attributes.longest_word_length, list_attributes.longest_word_example
-        );
-        println!(
-            "Mean word length          : {:.2} characters",
-            list_attributes.mean_word_length
-        );
-        println!(
-            "Entropy per word          : {:.3} bits",
-            list_attributes.entropy_per_word
-        );
-        println!(
-            "Efficiency per character  : {:.3} bits",
-            list_attributes.efficiency_per_character
-        );
-        println!(
-            "Assumed entropy per char  : {:.3} bits",
-            list_attributes.assumed_entropy_per_character
-        );
-        println!(
-            "Shortest edit distance    : {}",
-            list_attributes.shortest_edit_distance
-        );
-        println!(
-            "Mean edit distance        : {:.3}",
-            list_attributes.mean_edit_distance
-        );
-        println!(
-            "Longest shared prefix     : {}",
-            list_attributes.longest_shared_prefix
-        );
-        // Numbers of characters required to definitely get to a unique
-        // prefix
-        println!(
-            "Unique character prefix   : {}",
-            list_attributes.unique_character_prefix
-        );
-
-        println!(
-            "Kraft-McMillan inequality : {}",
-            list_attributes.kraft_mcmillan
-        );
-        if let Some(samples) = list_attributes.samples {
-            print_samples(samples)
-        }
-    }
-}
-
-fn print_attributes_as_json(list_attributes: &ListAttributes) {
-    let json = serde_json::to_string(&list_attributes).unwrap();
-    println!("{}", json);
 }
 
 /// If word starts with a double quote and ends with a double quote and comma,
@@ -311,7 +115,8 @@ fn can_decode_a_word() {
     let word = "   \"mat\",";
     assert_eq!(decode_word(word), "mat");
 }
-fn make_list_free_of_metadata(
+
+pub fn make_list_free_of_metadata(
     list: &[String],
     ignore_ending_metadata_delimiter: Option<char>,
     ignore_starting_metadata_delimiter: Option<char>,
@@ -379,7 +184,7 @@ pub fn calc_entropy_per_word(list_length: usize) -> f64 {
 
 use crate::edit_distance::find_edit_distance;
 /// Calculate the shortest edit distance between any two words on the list.
-fn find_shortest_edit_distance(list: &[String]) -> usize {
+pub fn find_shortest_edit_distance(list: &[String]) -> usize {
     // This use of max_value is smelly, but not sure I know how to do it better.
     let mut shortest_edit_distance = u32::max_value();
     // I think I can cheat and only go through half of the list here
@@ -461,7 +266,7 @@ pub fn find_longest_shared_prefix(list: &[String], longest_word_length: Option<u
 /// Given 2 words, finds the index of the first character that is
 /// **different** within them.
 /// ```
-/// use wla::display_information::find_first_different_character_zero_indexed;
+/// use wla::compute_attributes::find_first_different_character_zero_indexed;
 ///
 /// assert_eq!(
 ///     find_first_different_character_zero_indexed("hello", "help"), 3
@@ -501,7 +306,7 @@ pub fn find_first_different_character_zero_indexed(word1: &str, word2: &str) -> 
     }
 }
 
-fn has_starting_or_trailing_space(list: &[String]) -> bool {
+pub fn has_starting_or_trailing_space(list: &[String]) -> bool {
     for word in list {
         if word.trim() != word {
             return true;
@@ -521,11 +326,11 @@ where
     iter.into_iter().all(move |x| uniq.insert(x))
 }
 
-fn has_duplicates_exact(list: &[String]) -> bool {
+pub fn has_duplicates_exact(list: &[String]) -> bool {
     !all_unique_elements(list)
 }
 
-fn has_duplicates_fuzzy(list: &[String]) -> bool {
+pub fn has_duplicates_fuzzy(list: &[String]) -> bool {
     let mut lowercase_word_list = vec![];
     // There's probably a better way to do this...
     for word in list {
@@ -534,7 +339,7 @@ fn has_duplicates_fuzzy(list: &[String]) -> bool {
     !all_unique_elements(lowercase_word_list)
 }
 
-fn count_unique_words(list: &[String]) -> usize {
+pub fn count_unique_words(list: &[String]) -> usize {
     let mut list_as_hashset = HashSet::new();
     for word in list {
         // Need to explore how this treats lines of whitespace ("   ")
@@ -543,7 +348,7 @@ fn count_unique_words(list: &[String]) -> usize {
     list_as_hashset.len()
 }
 
-fn has_blank_lines(list: &[String]) -> bool {
+pub fn has_blank_lines(list: &[String]) -> bool {
     for word in list {
         if word.trim() == "" {
             return true;
@@ -552,13 +357,7 @@ fn has_blank_lines(list: &[String]) -> bool {
     false
 }
 
-fn has_non_ascii_characters(list: &[String]) -> bool {
-    // for word in list {
-    //     if word.chars().any(|chr| !chr.is_ascii()) {
-    //         return true;
-    //     }
-    // }
-    // false
+pub fn has_non_ascii_characters(list: &[String]) -> bool {
     for word in list {
         if !word.is_ascii() {
             return true;
@@ -569,7 +368,7 @@ fn has_non_ascii_characters(list: &[String]) -> bool {
 
 /// Checks if a list has any words that are prefixs of other
 /// words on the list.
-fn has_prefix_words(list: &[String]) -> bool {
+pub fn has_prefix_words(list: &[String]) -> bool {
     for word1 in list {
         for word2 in list {
             if word1 != word2 && word1.starts_with(word2) {
@@ -582,7 +381,7 @@ fn has_prefix_words(list: &[String]) -> bool {
 
 /// Checks if a list has any words that are suffixes of other
 /// words on the list.
-fn has_suffix_words(list: &[String]) -> bool {
+pub fn has_suffix_words(list: &[String]) -> bool {
     for word1 in list {
         for word2 in list {
             if word1 != word2 && word1.ends_with(word2) {
@@ -669,7 +468,7 @@ pub fn mean_word_length(list: &[String]) -> f32 {
         / list.len() as f32
 }
 
-fn print_samples(samples: Vec<String>) {
+pub fn print_samples(samples: Vec<String>) {
     println!("\nWord samples");
     println!("------------");
     for n in 0..30 {

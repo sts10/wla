@@ -1,5 +1,5 @@
-mod list_information_tests {
-    use wla::display_information::*;
+mod compute_attributes_tests {
+    use wla::compute_attributes::*;
 
     #[test]
     fn can_calculate_entropy_per_word_of_generated_list() {
