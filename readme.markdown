@@ -53,23 +53,24 @@ Options:
       --debug
           Print some debug information
   -g, --ignore-after <IGNORE_AFTER_DELIMITER>
-          Ignore characters after the first instance of the specified delimiter until
-          the end of line, treating anything before the delimiter as a word. Delimiter
-          must be a single character (e.g., ','). Use 't' for tab and 's' for space.
-          Helpful for ignoring metadata like word frequencies or dice numbers
+          Ignore characters after the first instance of the specified delimiter
+          until the end of line, treating anything before the delimiter as a word.
+          Delimiter must be a single character (e.g., ','). Use 't' for tab and
+          's' for space. Helpful for ignoring metadata like word frequencies or
+          dice numbers
   -G, --ignore-before <IGNORE_BEFORE_DELIMITER>
           Ignore characters before and including the first instance of the specified
-          delimiter, treating anything after the delimiter as a word. Delimiter must be
-          a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for
-          ignoring metadata like word frequencies or dice numbers
+          delimiter, treating anything after the delimiter as a word. Delimiter
+          must be a single character (e.g., ','). Use 't' for tab and 's' for space.
+          Helpful for ignoring metadata like word frequencies or dice numbers
   -d, --decode
-          If word starts with a double quote and ends with a double quote, remove those
-          3 characters before auditing list
+          If word starts with a double quote and ends with a double quote followed
+          by a comma, remove those 3 characters before auditing list
   -j, --json
           Print list information in JSON format
   -s, --samples
-          Print a handful of pseudorandomly selected words from the list to the terminal.
-          Should NOT be used as actual passphrases
+          Print a handful of pseudorandomly selected words from the list to the
+          terminal. Should NOT be used as actual passphrases
   -h, --help
           Print help
   -V, --version

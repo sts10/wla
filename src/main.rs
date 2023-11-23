@@ -32,8 +32,8 @@ struct Args {
     #[clap(short = 'G', long = "ignore-before")]
     ignore_before_delimiter: Option<char>,
 
-    /// If word starts with a double quote and ends with a double quote, remove those 3 characters
-    /// before auditing list.
+    /// If word starts with a double quote and ends with a double quote followed by a comma, remove
+    /// those 3 characters before auditing list.
     #[clap(short = 'd', long = "decode")]
     decode_words: bool,
 

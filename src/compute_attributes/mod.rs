@@ -93,7 +93,6 @@ pub fn decode_list(list: &[String]) -> Vec<String> {
             && word.chars().nth(word_length - 2) == Some('"')
             && word.chars().nth(word_length - 1) == Some(',')
         {
-            eprintln!("Found a code word");
             decoded_list.push(decode_word(word).to_string());
         } else {
             decoded_list.push(word.to_string());
