@@ -1,3 +1,7 @@
+# Version 0.2.2
+
+Fixes incorrect help text describing functionality of the `decode` option. Also removes a leftover debug `eprintln` statement.
+
 # Version 0.2.1
 
 * 4165e88 - be more explicit about types in find_mean_edit_distance function to avoid a bug when auditing long lists. See #3.
