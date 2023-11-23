@@ -4,7 +4,7 @@ A tool for finding information about a given word list.
 
 ## Examples
 ```
-$ wla -G t -s eff_long.txt 
+$ wla -G t -s eff_long.txt
 Lines found               : 7776
 Free of exact duplicates  : true
 Free of fuzzy duplicates  : true
@@ -38,7 +38,7 @@ preseason snide unranked crummiest absinthe gummy
 wages paper coastland unbridle zesty chitchat
 ```
 
-You can also pipe the output of other tools into wla: 
+You can also pipe the output of other tools into `wla`:
 
 `tidy -L -D t eff.txt | wla`
 
@@ -53,15 +53,23 @@ Options:
       --debug
           Print some debug information
   -g, --ignore-after <IGNORE_AFTER_DELIMITER>
-          Ignore characters after the first instance of the specified delimiter until the end of line, treating anything before the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies or dice numbers
+          Ignore characters after the first instance of the specified delimiter until
+          the end of line, treating anything before the delimiter as a word. Delimiter
+          must be a single character (e.g., ','). Use 't' for tab and 's' for space.
+          Helpful for ignoring metadata like word frequencies or dice numbers
   -G, --ignore-before <IGNORE_BEFORE_DELIMITER>
-          Ignore characters before and including the first instance of the specified delimiter, treating anything after the delimiter as a word. Delimiter must be a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for ignoring metadata like word frequencies or dice numbers
+          Ignore characters before and including the first instance of the specified
+          delimiter, treating anything after the delimiter as a word. Delimiter must be
+          a single character (e.g., ','). Use 't' for tab and 's' for space. Helpful for
+          ignoring metadata like word frequencies or dice numbers
   -d, --decode
-          If word starts with a double quote and ends with a double quote, remove those 3 characters before auditing list
+          If word starts with a double quote and ends with a double quote, remove those
+          3 characters before auditing list
   -j, --json
           Print list information in JSON format
   -s, --samples
-          Print a handful of pseudorandomly selected words from the list to the terminal. Should NOT be used as actual passphrases
+          Print a handful of pseudorandomly selected words from the list to the terminal.
+          Should NOT be used as actual passphrases
   -h, --help
           Print help
   -V, --version
@@ -87,9 +95,9 @@ If a word list is "uniquely decodable" that means that words from the list can b
 
 As a brief example, if a list has "boy", "hood", and "boyhood" on it, users who specified they wanted two words worth of randomness (entropy) might end up with "boyhood", which an attacker guessing single words would try. Removing the word "boy", which makes the remaining list uniquely decodable, prevents this possibility from occurring.
 
-WLA can check if a list is free of [prefix words](https://en.wikipedia.org/wiki/Prefix_code) and if it is free of suffix words. 
+WLA can check if a list is free of [prefix words](https://en.wikipedia.org/wiki/Prefix_code) and if it is free of suffix words.
 
-It also checks if a list is uniquely decodable. It does this using [the Sardinas–Patterson algorithm](https://en.wikipedia.org/wiki/Sardinas%E2%80%93Patterson_algorithm). 
+It also checks if a list is uniquely decodable. It does this using [the Sardinas–Patterson algorithm](https://en.wikipedia.org/wiki/Sardinas%E2%80%93Patterson_algorithm).
 
 ## On maximum shared prefix length
 
@@ -133,7 +141,7 @@ Where _S_ is the length of the shortest word on the list, 26 is the number of le
 When counting the length of a word, WLA counts the number of [grapheme clusters](https://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries) in the word. Generally, less common characters like accented letters and emoji all count as 1 grapheme cluster and thus, to WLA, one character. I believe this better fits with how us humans intuitively count characters in a string/word.
 
 ## What types of files does WLA work with?
-In general, WLA expects inputted files to have one word per line. 
+In general, WLA expects inputted files to have one word per line.
 
 ### Line endings
 WLA supports `\n` and `\r\n` line endings.
@@ -141,6 +149,6 @@ WLA supports `\n` and `\r\n` line endings.
 
 ## For developers: How to create a release
 
-This project uses [cargo-dist](https://opensource.axo.dev/cargo-dist/) to create releases. 
+This project uses [cargo-dist](https://opensource.axo.dev/cargo-dist/) to create releases.
 
 Some of [my personal docs are here](https://sts10.github.io/docs/cargo-dist-tips.html); but basically, `cargo install cargo-dist`. When you're ready to cut a new release, test the current state of the project with `cargo dist build` and `cargo dist plan`. If that went well, create a new git tag that matches the current project version in `Cargo.toml` with `git tag vX.X.X`. Finally, run `git push --tags` to kick off the release process. GitHub will handle it from here -- check your GitHub Releases page in about 5 to 10 minutes.
