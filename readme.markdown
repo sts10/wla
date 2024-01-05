@@ -88,6 +88,8 @@ Check [the GitHub releases page](https://github.com/sts10/wla/releases) for bina
 
 Once installed, you should then be able to run `wla --help` for help text.
 
+----
+
 ## About the information reported by this program
 
 ### Prefix codes, suffix codes, and uniquely decodable codes
@@ -100,13 +102,13 @@ WLA can check if a list is free of [prefix words](https://en.wikipedia.org/wiki/
 
 It also checks if a list is uniquely decodable. It does this using [the Sardinas–Patterson algorithm](https://en.wikipedia.org/wiki/Sardinas%E2%80%93Patterson_algorithm).
 
-## On maximum shared prefix length
+### On maximum shared prefix length
 
 If WLA reports that the shared prefix length is say, 4, that means that knowing the first 4 characters of any word on the generated list is sufficient to know which word it is.
 
 On this hypothetical list, we'd know that if a word starts with "radi", we know it must be the word "radius".
 
-## What is "Efficiency per character" and "Assumed entropy per char" and what's the difference?
+### What is "Efficiency per character" and "Assumed entropy per char" and what's the difference?
 
 If we take the entropy per word from a list (log<sub>2</sub>(list_length)) and divide it by the **average** word length of words on the list, we get a value we might call "efficiency per character". This just means that, on average, you get _E_ bits per character typed.
 
@@ -147,8 +149,9 @@ In general, WLA expects inputted files to have one word per line.
 ### Line endings
 WLA supports `\n` and `\r\n` line endings.
 
+---
 
-## For developers: How to create a release
+## For developers: How to create a release of WLA
 
 This project uses [cargo-dist](https://opensource.axo.dev/cargo-dist/) to create releases.
 
