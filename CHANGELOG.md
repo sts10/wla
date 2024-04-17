@@ -1,3 +1,7 @@
+# Version 0.2.3
+
+Bumps some dependencies up to current version. Also bumps `cargo-dist` version up-to-date, hopefully improving built binaries.
+
 # Version 0.2.2
 
 Fixes incorrect help text describing functionality of the `decode` option. Also removes a leftover debug `eprintln` statement.
