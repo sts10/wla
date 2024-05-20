@@ -38,7 +38,7 @@ preseason snide unranked crummiest absinthe gummy
 wages paper coastland unbridle zesty chitchat
 ```
 
-You can also pipe the output of other tools into `wla`:
+You can also pipe the output of other tools like [Tidy](https://github.com/sts10/tidy) into `wla`:
 
 `tidy -L -D t eff.txt | wla`
 
@@ -87,6 +87,10 @@ Check [the GitHub releases page](https://github.com/sts10/wla/releases) for bina
 2. Run: `cargo install --git https://github.com/sts10/wla --locked --branch main` (Run this same command to upgrade wla.) Uninstall wla by running `cargo uninstall wla`.
 
 Once installed, you should then be able to run `wla --help` for help text.
+
+## Tools for _editing_ a word list
+
+This tool is for auditing an existing word list. If you want to _edit_ a word list or create a new word list, I'd point you to my tool [Tidy](https://github.com/sts10/tidy).
 
 ----
 
