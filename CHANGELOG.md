@@ -1,3 +1,7 @@
+# Version 0.2.4
+* Upgrades `rand` dependency to v0.9.0.
+* Uses latest version of `dist`/`cargo-dist` to create this release.
+
 # Version 0.2.3
 
 Bumps some dependencies up to current version. Also bumps `cargo-dist` version up-to-date, hopefully improving built binaries.
