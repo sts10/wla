@@ -1,4 +1,5 @@
 # Word List Auditor (WLA)
+[![](https://deps.rs/repo/github/sts10/wla/status.svg)](https://deps.rs/repo/github/sts10/wla)
 
 A tool for finding information about a given word list.
 
