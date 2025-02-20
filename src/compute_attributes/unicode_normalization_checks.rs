@@ -1,10 +1,10 @@
 // use unicode_normalization::UnicodeNormalization;
 use std::collections::HashSet;
+use unicode_normalization::IsNormalized;
 use unicode_normalization::is_nfc_quick;
 use unicode_normalization::is_nfd_quick;
 use unicode_normalization::is_nfkc_quick;
 use unicode_normalization::is_nfkd_quick;
-use unicode_normalization::IsNormalized;
 // pub enum IsNormalized {
 //     Yes,
 //     No,
